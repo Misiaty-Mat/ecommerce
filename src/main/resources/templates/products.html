@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Katalog</title>
+</head>
+<body>
+<h1>Katalog</h1>
+
+<ul th:each="product : ${products}">
+    <li th:text="${product.name + ' - ' + product.price + ' zł'}"
+        th:style="${!product.available} ? 'color: gray;opacity: 0.6;' : ''">
+    </li>
+    <form th:if="${product.available}"
+          th:action="@{/add-to-basket/{productId}(productId=${product.id})}" method="post" style="display:inline;">
+        <input type="hidden" name="redirectUrl" th:value="${#ctx.springRequestContext.requestUri}"/>
+        <button type="submit">Dodaj do koszyka</button>
+    </form>
+</ul>
+
+
+<div th:unless="${totalPrice == 0}">
+    <h1>Koszyk</h1>
+    <ul th:each="basketItem : ${basketItems}">
+        <li th:text="${basketItem.quantity + ' szt. ' + basketItem.product.name + ' - ' + basketItem.product.price + ' zł'}"></li>
+        <form th:action="@{/basket/delete/{productId}(productId=${basketItem.id})}" method="post"
+              style="display:inline;">
+            <input type="hidden" name="redirectUrl" th:value="${#ctx.springRequestContext.requestUri}"/>
+            <button type="submit">Usuń z koszyka</button>
+        </form>
+    </ul>
+    <div th:if="${promotionName != null}" th:text="${'Aktywna promocja: ' + promotionName}"></div>
+    <br>
+    <span>Podaj kod promocyjny</span>
+    <form th:action="@{/basket/promotion}" method="post" style="display:inline;">
+        <input type="hidden" name="redirectUrl" th:value="${#ctx.springRequestContext.requestUri}"/>
+        <input type="text" name="code"/>
+        <button type="submit">Użyj kodu</button>
+    </form>
+    <div>
+        <div th:text="${'Za całość: ' + totalPrice + ' zł'}"></div>
+        <div th:if="${totalPrice != basePrice}" th:text="${'Cena bez promocji: ' + basePrice + ' zł'}"></div>
+    </div>
+</div>
+
+</body>
+</html>
