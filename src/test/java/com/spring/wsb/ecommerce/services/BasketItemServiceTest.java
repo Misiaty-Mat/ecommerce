@@ -25,8 +25,8 @@ class BasketItemServiceTest {
     @Test
     void addNewProductToBasketTest() {
         //given
-        final int productId = 1;
-        Product product = Product.builder()
+        final long productId = 1;
+        final Product product = Product.builder()
                 .id(productId)
                 .name("product name")
                 .build();
@@ -45,11 +45,11 @@ class BasketItemServiceTest {
     @Test
     void addMoreThanOneProductToBasketTest() {
         //given
-        final int productId = 1;
+        final long productId = 1;
         when(basketItemRepository.findByProduct_Id(productId)).thenReturn(Optional.of(
                 BasketItem.builder()
-                        .quantity(1)
-                        .product(Product.builder().id(productId).build())
+                        .quantity(1L)
+                        .product(Product.builder().id(productId).quantityOnHand(4L).build())
                         .build()
         ));
 

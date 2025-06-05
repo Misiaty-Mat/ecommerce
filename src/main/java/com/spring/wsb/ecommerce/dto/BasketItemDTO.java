@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class BasketItemDTO {
 
-    private Integer id;
-    private Integer quantity;
+    private Long id;
+    private Long quantity;
     private ProductDTO product;
 }

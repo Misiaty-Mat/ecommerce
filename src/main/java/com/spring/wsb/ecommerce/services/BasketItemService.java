@@ -25,7 +25,7 @@ public class BasketItemService {
                 .toList();
     }
 
-    public void addToBasket(final Integer productId) {
+    public void addToBasket(final Long productId) {
         basketItemRepository.findByProduct_Id(productId)
                 .ifPresentOrElse(
                         this::updateQuantity,
@@ -33,20 +33,50 @@ public class BasketItemService {
                 );
     }
 
-    public void removeFromBasket(final Integer id) {
-       basketItemRepository.deleteById(id);
+    public void removeFromBasket(final Long id) {
+        basketItemRepository.findById(id)
+                .ifPresent(basketItem -> {
+                    final Product product = basketItem.getProduct();
+                    product.setAvailable(true);
+                    productRepository.save(product);
+                    basketItemRepository.delete(basketItem);
+                });
     }
 
-    private void updateQuantity(BasketItem basketItem) {
+    public void confirmPurchase() {
+        basketItemRepository.findAll().forEach(basketItem -> {
+            final long quantity = basketItem.getQuantity();
+            final Product product = basketItem.getProduct();
+            long newQuantity = product.getQuantityOnHand() - quantity;
+
+            if (newQuantity < 0) {
+                throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
+            }
+
+            product.setQuantityOnHand(newQuantity);
+            productRepository.save(product);
+        });
+        basketItemRepository.deleteAll();
+    }
+
+    private void updateQuantity(final BasketItem basketItem) {
+        final Product product = basketItem.getProduct();
         basketItem.setQuantity(basketItem.getQuantity() + 1);
+
+        final Long availableProducts = product.getQuantityOnHand();
+        if (availableProducts - basketItem.getQuantity() == 0) {
+            product.setAvailable(false);
+            productRepository.save(product);
+        }
+
         basketItemRepository.save(basketItem);
     }
 
-    private void saveNewBasketItem(Integer productId) {
+    private void saveNewBasketItem(final Long productId) {
         final Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
         final BasketItem basketItem = BasketItem.builder()
-                .quantity(1)
+                .quantity(1L)
                 .product(product)
                 .build();
 

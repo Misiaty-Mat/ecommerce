@@ -19,9 +19,9 @@ public class PromotionService {
     private final PromotionRepository promotionRepository;
     private final BasketRepository basketRepository;
 
-    public void checkPromotionCode(String code) {
+    public void checkPromotionCode(final String code) {
         promotionRepository.findByActivationCodeIgnoreCase(code).ifPresent(promotion -> {
-            Basket basket = basketRepository.findTopBy();
+            final Basket basket = basketRepository.findTopBy();
             basket.setPromotion(promotion);
             basketRepository.save(basket);
         });
@@ -32,7 +32,7 @@ public class PromotionService {
     }
 
     public BigDecimal getPriceWithPromotion(final List<BasketItemDTO> basketItems) {
-        Promotion promotion = getActivePromotion();
+        final Promotion promotion = getActivePromotion();
 
         if (promotion == null) {
             return getPriceWithNoPromotion(basketItems);
@@ -44,14 +44,14 @@ public class PromotionService {
                         .map(PromotionService::getItemPrice)
                         .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-                BigDecimal discountPercent = BigDecimal.ONE.subtract(promotion.getPercentCheaper().movePointLeft(2));
+                final BigDecimal discountPercent = BigDecimal.ONE.subtract(promotion.getPercentCheaper().movePointLeft(2));
                 return basePrice.multiply(discountPercent);
             }
             case CHEAPEST_FOR_1_ZL -> {
-                int numOfProductsFor1Zl = basketItems.size() / promotion.getProductNumberNeeded();
+                long numOfProductsFor1Zl = basketItems.size() / promotion.getProductNumberNeeded();
                 if (numOfProductsFor1Zl != 0) {
 
-                    List<Integer> productsFor1Zl = basketItems.stream()
+                    final List<Long> productsFor1Zl = basketItems.stream()
                             .sorted(Comparator.comparing(PromotionService::getItemPrice))
                             .map(BasketItemDTO::getId)
                             .limit(numOfProductsFor1Zl)
@@ -82,28 +82,28 @@ public class PromotionService {
         }
     }
 
-    public static BigDecimal getPriceWithNoPromotion(List<BasketItemDTO> basketItems) {
+    public static BigDecimal getPriceWithNoPromotion(final List<BasketItemDTO> basketItems) {
         return basketItems.stream()
                 .map(PromotionService::getItemPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    private BigDecimal calculateSameItemDiscountPrice(BasketItemDTO item) {
-        Promotion promotion = getActivePromotion();
-        int itemsNeeded = promotion.getProductNumberNeeded();
-        int discountedQuantity = item.getQuantity() / itemsNeeded ;
-        int notDiscountedQuantity = item.getQuantity() - discountedQuantity;
+    private BigDecimal calculateSameItemDiscountPrice(final BasketItemDTO item) {
+        final Promotion promotion = getActivePromotion();
+        final long itemsNeeded = promotion.getProductNumberNeeded();
+        final long discountedQuantity = item.getQuantity() / itemsNeeded ;
+        final long notDiscountedQuantity = item.getQuantity() - discountedQuantity;
 
-        BigDecimal discounted = item.getProduct().getPrice()
+        final BigDecimal discounted = item.getProduct().getPrice()
                 .multiply(BigDecimal.valueOf(discountedQuantity))
                 .multiply(promotion.getPercentCheaper().movePointLeft(2));
-        BigDecimal notDiscounted = item.getProduct().getPrice()
+        final BigDecimal notDiscounted = item.getProduct().getPrice()
                 .multiply(BigDecimal.valueOf(notDiscountedQuantity));
 
         return discounted.add(notDiscounted);
     }
 
-    private static BigDecimal getItemPrice(BasketItemDTO basketItem) {
+    private static BigDecimal getItemPrice(final BasketItemDTO basketItem) {
         return basketItem.getProduct().getPrice().multiply(BigDecimal.valueOf(basketItem.getQuantity()));
     }
 }

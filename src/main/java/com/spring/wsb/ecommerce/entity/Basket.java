@@ -15,7 +15,7 @@ public class Basket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private Integer id;
+    private Long id;
 
     @OneToOne
     @JoinColumn(name = "promotion_id", referencedColumnName = "id")

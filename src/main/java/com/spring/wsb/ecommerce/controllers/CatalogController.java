@@ -58,14 +58,20 @@ public class CatalogController {
     }
 
     @PostMapping("add-to-basket/{productId}")
-    public String addToBasket(@PathVariable Integer productId, @RequestParam(required = false) String redirectUrl) {
+    public String addToBasket(@PathVariable Long productId, @RequestParam(required = false) String redirectUrl) {
         basketItemService.addToBasket(productId);
         return "redirect:" + (redirectUrl != null ? redirectUrl : "/");
     }
 
     @PostMapping("/basket/delete/{id}")
-    public String deleteItem(@PathVariable Integer id, @RequestParam(required = false) String redirectUrl) {
+    public String deleteItem(@PathVariable Long id, @RequestParam(required = false) String redirectUrl) {
         basketItemService.removeFromBasket(id);
+        return "redirect:" + (redirectUrl != null ? redirectUrl : "/");
+    }
+
+    @PostMapping("/basket/purchase")
+    public String confirmPurchase(@RequestParam(required = false) String redirectUrl) {
+        basketItemService.confirmPurchase();
         return "redirect:" + (redirectUrl != null ? redirectUrl : "/");
     }
 

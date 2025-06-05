@@ -13,11 +13,11 @@ import java.math.BigDecimal;
 @Builder
 public class ProductDTO {
 
-    private Integer id;
+    private Long id;
     private String name;
     private String description;
     private String category;
-    private Integer quantityOnHand;
+    private Long quantityOnHand;
     private BigDecimal price;
     private Boolean available;
 }

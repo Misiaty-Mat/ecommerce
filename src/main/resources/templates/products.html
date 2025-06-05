@@ -39,6 +39,11 @@
     <div>
         <div th:text="${'Za całość: ' + totalPrice + ' zł'}"></div>
         <div th:if="${totalPrice != basePrice}" th:text="${'Cena bez promocji: ' + basePrice + ' zł'}"></div>
+
+        <form th:action="@{/basket/purchase}" method="post" style="display:inline;">
+            <input type="hidden" name="redirectUrl" th:value="${#ctx.springRequestContext.requestUri}"/>
+            <button type="submit">Potwierdź zakupy</button>
+        </form>
     </div>
 </div>
 

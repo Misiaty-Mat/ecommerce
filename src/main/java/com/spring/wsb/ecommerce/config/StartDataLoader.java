@@ -36,7 +36,7 @@ public class StartDataLoader implements CommandLineRunner {
                         .name("T-shirt")
                         .category(Category.CLOTHING)
                         .price(new BigDecimal("29.99"))
-                        .quantityOnHand(200)
+                        .quantityOnHand(200L)
                         .available(true)
                         .build(),
 
@@ -44,7 +44,7 @@ public class StartDataLoader implements CommandLineRunner {
                         .name("Cebula")
                         .category(Category.FOOD)
                         .price(new BigDecimal("1.50"))
-                        .quantityOnHand(40)
+                        .quantityOnHand(40L)
                         .available(true)
                         .build(),
 
@@ -52,7 +52,7 @@ public class StartDataLoader implements CommandLineRunner {
                         .name("Czekolada")
                         .category(Category.FOOD)
                         .price(new BigDecimal("8.99"))
-                        .quantityOnHand(0)
+                        .quantityOnHand(0L)
                         .available(false)
                         .build(),
 
@@ -60,7 +60,7 @@ public class StartDataLoader implements CommandLineRunner {
                         .name("Baton")
                         .category(Category.FOOD)
                         .price(new BigDecimal("2.99"))
-                        .quantityOnHand(5)
+                        .quantityOnHand(5L)
                         .available(true)
                         .build(),
 
@@ -68,7 +68,7 @@ public class StartDataLoader implements CommandLineRunner {
                         .name("Makaron")
                         .category(Category.FOOD)
                         .price(new BigDecimal("14.99"))
-                        .quantityOnHand(84)
+                        .quantityOnHand(84L)
                         .available(true)
                         .build()
         );
@@ -77,7 +77,7 @@ public class StartDataLoader implements CommandLineRunner {
     }
 
     private void loadPromotions() {
-        List<Promotion> promotions = List.of(
+        final List<Promotion> promotions = List.of(
                 Promotion.builder()
                         .name("10% taniej na wszystkie produkty w Koszyku")
                         .type(PromotionType.ALL_CHEAPER)
@@ -87,13 +87,13 @@ public class StartDataLoader implements CommandLineRunner {
                 Promotion.builder()
                         .name("przy zakupie 3 produktów najtańszy jest za złotówkę")
                         .type(PromotionType.CHEAPEST_FOR_1_ZL)
-                        .productNumberNeeded(3)
+                        .productNumberNeeded(3L)
                         .activationCode("wsb2")
                         .build(),
                 Promotion.builder()
                         .name("przy zakupie 2 takich samych produktów, drugi z nich jest za połowę ceny")
                         .type(PromotionType.SAME_PRODUCT)
-                        .productNumberNeeded(2)
+                        .productNumberNeeded(2L)
                         .percentCheaper(new BigDecimal(50))
                         .activationCode("wsb3")
                         .build()

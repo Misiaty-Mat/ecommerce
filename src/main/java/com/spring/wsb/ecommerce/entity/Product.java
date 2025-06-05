@@ -20,7 +20,7 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false, nullable = false)
-    private Integer id;
+    private Long id;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -32,7 +32,7 @@ public class Product {
     private Category category;
 
     @Column(name = "quantityOnHand", nullable = false)
-    private Integer quantityOnHand;
+    private Long quantityOnHand;
 
     @Column(name = "price", nullable = false)
     private BigDecimal price;

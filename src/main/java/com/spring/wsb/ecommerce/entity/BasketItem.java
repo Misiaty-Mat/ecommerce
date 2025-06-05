@@ -17,10 +17,10 @@ public class BasketItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private Integer id;
+    private Long id;
 
     @Column(name = "quantity", nullable = false)
-    private Integer quantity;
+    private Long quantity;
 
     @OneToOne
     @JoinColumn(name = "product_id", referencedColumnName = "id")

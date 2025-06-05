@@ -31,12 +31,8 @@ public class Promotion {
     private BigDecimal percentCheaper;
 
     @Column(name = "productNumberNeeded")
-    private Integer productNumberNeeded;
+    private Long productNumberNeeded;
 
     @Column(name = "activationCode")
     private String activationCode;
-
-//    @JsonIgnore
-//    @OneToOne(mappedBy = "promotion")
-//    private Basket basket;
 }

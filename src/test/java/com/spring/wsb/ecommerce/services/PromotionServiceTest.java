@@ -31,16 +31,16 @@ class PromotionServiceTest {
     @Test
     void getPriceWithTenPercentCheaperPromotionTest() {
         //given
-        BigDecimal percentCheaper = BigDecimal.TEN;
+        final BigDecimal percentCheaper = BigDecimal.TEN;
         when(basketRepository.findTopBy()).thenReturn(Basket.builder().promotion(
                 Promotion.builder().type(PromotionType.ALL_CHEAPER).percentCheaper(percentCheaper).build()
         ).build());
 
         //when
-        BigDecimal priceWithPromotion = promotionService.getPriceWithPromotion(getBasketItems());
+        final BigDecimal priceWithPromotion = promotionService.getPriceWithPromotion(getBasketItems());
 
         //then
-        BigDecimal expectedPrice = PromotionService.getPriceWithNoPromotion(getBasketItems())
+        final BigDecimal expectedPrice = PromotionService.getPriceWithNoPromotion(getBasketItems())
                 .multiply(BigDecimal.ONE.subtract(percentCheaper.movePointLeft(2)));
         assertEquals(expectedPrice, priceWithPromotion);
     }
@@ -49,14 +49,14 @@ class PromotionServiceTest {
     void getPriceWithProductsFor1ZlPromotionTest() {
         //given
         when(basketRepository.findTopBy()).thenReturn(Basket.builder().promotion(
-                Promotion.builder().type(PromotionType.CHEAPEST_FOR_1_ZL).productNumberNeeded(3).build()
+                Promotion.builder().type(PromotionType.CHEAPEST_FOR_1_ZL).productNumberNeeded(3L).build()
         ).build());
 
         //when
-        BigDecimal priceWithPromotion = promotionService.getPriceWithPromotion(getBasketItems());
+        final BigDecimal priceWithPromotion = promotionService.getPriceWithPromotion(getBasketItems());
 
         //then
-        BigDecimal expectedPrice = BigDecimal.valueOf(797);
+        final BigDecimal expectedPrice = BigDecimal.valueOf(797);
         assertEquals(expectedPrice, priceWithPromotion);
     }
 
@@ -66,66 +66,66 @@ class PromotionServiceTest {
         when(basketRepository.findTopBy()).thenReturn(Basket.builder().promotion(
                 Promotion.builder()
                         .type(PromotionType.SAME_PRODUCT)
-                        .productNumberNeeded(2)
+                        .productNumberNeeded(2L)
                         .percentCheaper(BigDecimal.valueOf(50))
                         .build()
         ).build());
 
         //when
-        BigDecimal priceWithPromotion = promotionService.getPriceWithPromotion(getBasketItems());
+        final BigDecimal priceWithPromotion = promotionService.getPriceWithPromotion(getBasketItems());
 
         //then
-        BigDecimal expectedPrice = BigDecimal.valueOf(680.00);
+        final BigDecimal expectedPrice = BigDecimal.valueOf(680.00);
         assertEquals(0, priceWithPromotion.compareTo(expectedPrice));
     }
 
     private List<BasketItemDTO> getBasketItems() {
         return List.of(
                 BasketItemDTO.builder()
-                        .id(1)
-                        .quantity(5)
+                        .id(1L)
+                        .quantity(5L)
                         .product(ProductDTO.builder()
                                 .price(BigDecimal.TEN)
                                 .build())
                         .build(),
                 BasketItemDTO.builder()
-                        .id(2)
-                        .quantity(3)
+                        .id(2L)
+                        .quantity(3L)
                         .product(ProductDTO.builder()
                                 .price(BigDecimal.valueOf(20))
                                 .build())
                         .build(),
                 BasketItemDTO.builder()
-                        .id(3)
-                        .quantity(1)
+                        .id(3L)
+                        .quantity(1L)
                         .product(ProductDTO.builder()
                                 .price(BigDecimal.valueOf(100))
                                 .build())
                         .build(),
                 BasketItemDTO.builder()
-                        .id(4)
-                        .quantity(10)
+                        .id(4L)
+                        .quantity(10L)
                         .product(ProductDTO.builder()
                                 .price(BigDecimal.valueOf(30))
                                 .build())
                         .build(),
                 BasketItemDTO.builder()
-                        .id(5)
-                        .quantity(2)
+                        .id(5L)
+                        .quantity(2L)
                         .product(ProductDTO.builder()
                                 .price(BigDecimal.TEN)
                                 .build())
                         .build(),
                 BasketItemDTO.builder()
-                        .id(6)
-                        .quantity(15)
+                        .id(6L)
+                        .quantity(15L)
                         .product(ProductDTO.builder()
                                 .price(BigDecimal.TEN)
                                 .build())
                         .build(),
                 BasketItemDTO.builder()
-                        .id(7)
-                        .quantity(30)
+                        .id(7L)
+                        .quantity(30L)
                         .product(ProductDTO.builder()
                                 .price(BigDecimal.valueOf(6))
                                 .build())
